@@ -1,0 +1,19 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+stages:
+- build
+
+variables:
+  CONTAINER_IMAGE: jrbeverly/$CI_PROJECT_ID:$CI_BUILD_REF_NAME
+
+before_script:
+  - docker login -u jrbeverly -p $CI_BUILD_TOKEN
+
+build:
+  stage: build
+  script:
+    - docker build --pull -t $CONTAINER_IMAGE .
+    - docker push $CONTAINER_IMAGE
