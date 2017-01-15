@@ -27,7 +27,7 @@ RUN chmod +x /tmp/install; sync; bash /tmp/install
 
 COPY rootfs/ /
 
-RUN rm -rf /tmp/* /var/tmp/*
+RUN rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
 
 # Ports
 #
