@@ -3,7 +3,9 @@ set -e
 cd /tmp/
 
 apk add --update --no-cache ca-certificates coreutils tzdata 
- apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/community shadow 
+apk add --no-cache --repository http://nl.alpinelinux.org/alpine/edge/community shadow 
+
+groupmod -g 1000 users
 
 apk add --update --no-cache bind-tools curl
 curl -sSL https://github.com/just-containers/s6-overlay/releases/download/${S6_OVERLAY_VERSION}/s6-overlay-amd64.tar.gz | tar xfz - -C /
