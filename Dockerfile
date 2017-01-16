@@ -1,13 +1,6 @@
 FROM alpine:3.5
 MAINTAINER jrbeverly
 
-# Metadata 
-#
-# The metadata of the image.
-LABEL app="Alpine Base Image"
-LABEL description="A docker image configured to handle small docker containers."
-LABEL version="0.1"
-
 # Build Arguments
 #
 # Arguments used in the build process of the docker container.
@@ -16,6 +9,13 @@ LABEL version="0.1"
 #
 # Environment variables present in the docker container.
 ENV S6_OVERLAY_VERSION=v1.18.1.5
+
+# Metadata 
+#
+# The metadata of the image.
+LABEL app="Alpine Base Image"
+LABEL description="A docker image configured to handle small docker containers."
+LABEL version="0.1"
 
 # Provision
 #
