@@ -5,7 +5,7 @@ MAINTAINER jrbeverly
 #
 # Arguments used in the build process of the docker container.
 
-# Enironment Variables
+# Environment Variables
 #
 # Environment variables present in the docker container.
 ENV S6_OVERLAY_VERSION=v1.18.1.5
