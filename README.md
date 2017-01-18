@@ -1,29 +1,11 @@
-# Dockerized Template
-The description of the application that is being dockerized goes here.
+# Dockerized Alpine
+[![Build Status](https://gitlab.com/jrbeverly-docker/docker-alpine/badges/master/build.svg)](https://gitlab.com/jrbeverly-docker/docker-alpine/commits/master) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000)](https://gitlab.com/jrbeverly-docker/docker-alpine/blob/master/LICENSE) [![Alpine v3.4](https://img.shields.io/badge/alpine-3.4-green.svg?maxAge=2592000)](https://alpinelinux.org/posts/Alpine-3.4.0-released.html)
+
+A super small Docker image based on Alpine Linux. 
 
 ## Usage
 
-It is suggested to use [docker-compose](https://docs.docker.com/compose/) to setup the environment.
-You can see a simple `docker-compose.yml` file below:
-
-```yaml
-sample:
-  container_name: sample
-  image: jrbeverly/sample
-  hostname: sample  
-  ports:
-    - "80:80"
-  volumes:
-    - /etc/localtime:/etc/localtime:ro
-  labels:
-    - "ca.jrbeverly.env=simple"
-```
-
-You can then use `docker-compose` to start the environment:
-
-```console
-docker-compose up -d
-```
+It is suggested to use this as either a template or a base image.
 
 ## Volumes
 
@@ -45,6 +27,8 @@ Build arguments used in the system.
 
 | Variable | Description |
 | ----------| --------------- |
+| BUILD_DATE | - | The date which the image was built. |
+| VERSION | - | The version of the image. |
 
 ## Environment Variables
 
@@ -57,9 +41,12 @@ Environment variables used in the system.
 
 All processes within the docker container will be run as the **docker user**, a non-root user.  The **docker user** is created on build with the user id `DUID` and a member of a group with group id `DGID`.  
 
-Any permissions on the host operating system (OS) associated with either the user (`DUID`) or group (`DGID`) will be associated with the docker container.  
+Any permissions on the host operating system (OS) associated with either the user (`DUID`) or group (`DGID`) will be associated with the docker container.  The values of `DUID` and `DGID` are visible in the [Build Arguments](#Build-Arguments), and can be accessed by the the command:
 
-The default `DUID` is `6500` and `DGID` is `6510`.
+```console
+docker inspect -f '{{ index .Config.Labels "user" }}' $IMAGE
+docker inspect -f '{{ index .Config.Labels "group" }}' $IMAGE
+```
 
 The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`). 
 
