@@ -4,6 +4,8 @@ MAINTAINER jrbeverly
 # Build Arguments
 #
 # Arguments used in the build process of the docker container.
+ARG BUILD_DATE
+ARG VERSION
 
 # Environment Variables
 #
@@ -15,7 +17,8 @@ ENV S6_OVERLAY_VERSION=v1.18.1.5
 # The metadata of the image.
 LABEL app="Alpine Base Image"
 LABEL description="A docker image configured to handle small docker containers."
-LABEL version="0.1"
+LABEL version="${VERSION}"
+LABEL build_date="${BUILD_DATE}"
 
 # Provision
 #
@@ -23,7 +26,7 @@ LABEL version="0.1"
 RUN apk add --no-cache bash
 
 COPY provision/install /tmp/install
-RUN chmod +x /tmp/install; sync; bash /tmp/install 
+RUN sh /tmp/install ; sync; rm -f /tmp/install 
 
 COPY rootfs/ /
 
