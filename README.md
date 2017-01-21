@@ -12,21 +12,21 @@ It is suggested to use this as either a template or a base image.
 Volumes exposed by the docker container.[^1]
 
 | Volume | Description |
-| --------------------------| ------------- |
+| ------ | ----------- |
 
 ## Ports
 
 Ports exposed by the docker container.
 
 | Port | Description |
-| --------- | --------------------------------------------- |
+| ---- | ----------- |
 
 ## Build Arguments
 
 Build arguments used in the system.
 
 | Variable | Default | Description |
-| ----------| --------------- |
+| -------- | ------- |------------ |
 | BUILD_DATE | - | The date which the image was built. |
 | VERSION | - | The version of the image. |
 
@@ -35,8 +35,8 @@ Build arguments used in the system.
 Environment variables used in the system.
 
 | Variable | Default | Description |
-| ----------| --------------- |
-
+| -------- | ------- |------------ |
+| S6_OVERLAY_VERSION | v1.18.1.5 | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
 ### User and Group Mapping
 
 All processes within the docker container will be run as the **docker user**, a non-root user.  The **docker user** is created on build with the user id `DUID` and a member of a group with group id `DGID`.  
