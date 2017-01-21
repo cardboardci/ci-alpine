@@ -25,7 +25,7 @@ Ports exposed by the docker container.
 
 Build arguments used in the system.
 
-| Variable | Description |
+| Variable | Default | Description |
 | ----------| --------------- |
 | BUILD_DATE | - | The date which the image was built. |
 | VERSION | - | The version of the image. |
@@ -34,7 +34,7 @@ Build arguments used in the system.
 
 Environment variables used in the system.
 
-| Variable | Description |
+| Variable | Default | Description |
 | ----------| --------------- |
 
 ### User and Group Mapping
