@@ -10,6 +10,7 @@ ARG VERSION
 # Environment Variables
 #
 # Environment variables present in the docker container.
+ENV HOME=/
 ENV S6_OVERLAY_VERSION=v1.18.1.5
 
 # Metadata 

@@ -1,21 +1,15 @@
-DOCKER  := "/usr/bin/docker"
-IMAGE   := $(cat IMAGE)
+IMAGE := $(shell cat IMAGE)
 
 build:
-	${DOCKER} build --build-arg BUILD_DATE="$(date)" --build-arg VERSION="$(cat VERSION)" --pull -t ${IMAGE}:latest .
-
+	docker build --build-arg BUILD_DATE="$(shell date)" --build-arg VERSION="$(shell cat VERSION)" --pull -t ${IMAGE}:latest .
 version:
-    ${DOCKER} build --build-arg BUILD_DATE="$(date)" --build-arg VERSION="$(cat VERSION)" --build-arg SONEREZH_VERSION="${VERSION}" --pull -t ${IMAGE}:${VERSION} .
-
+    docker build --build-arg BUILD_DATE="$(shell date)" --build-arg VERSION="$(shell cat VERSION)" --build-arg SONEREZH_VERSION="${VERSION}" --pull -t ${IMAGE}:${VERSION} .
 clean:
-	${DOCKER} rmi ${IMAGE}
-	
+	docker rmi ${IMAGE}
 rebuild: 
-	${DOCKER} rmi ${IMAGE}
-	${DOCKER} build -t ${IMAGE} .
-
+	docker rmi ${IMAGE}
+	docker build -t ${IMAGE} .
 push:
-	${DOCKER} push ${IMAGE}
-
+	docker push ${IMAGE}
 all:
 	build

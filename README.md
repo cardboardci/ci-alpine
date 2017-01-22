@@ -36,7 +36,9 @@ Environment variables used in the system.
 
 | Variable | Default | Description |
 | -------- | ------- |------------ |
+| HOME | / | The pathname of the user's home directory. |
 | S6_OVERLAY_VERSION | v1.18.1.5 | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
+
 ### User and Group Mapping
 
 All processes within the docker container will be run as the **docker user**, a non-root user.  The **docker user** is created on build with the user id `DUID` and a member of a group with group id `DGID`.  
