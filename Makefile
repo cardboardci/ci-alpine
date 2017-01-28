@@ -1,15 +1,13 @@
-IMAGE := $(shell cat IMAGE)
+IMAGE := jrbeverly/alpine
+TAG := latest
+VERSION := 0.1.0
 
 build:
-	docker build --build-arg BUILD_DATE="$(shell date)" --build-arg VERSION="$(shell cat VERSION)" --pull -t ${IMAGE}:latest .
-version:
-    docker build --build-arg BUILD_DATE="$(shell date)" --build-arg VERSION="$(shell cat VERSION)" --build-arg SONEREZH_VERSION="${VERSION}" --pull -t ${IMAGE}:${VERSION} .
+	docker build --build-arg BUILD_DATE="$(shell date)" --build-arg VERSION="${VERSION}" --pull -t ${IMAGE}:${TAG} .
 clean:
-	docker rmi ${IMAGE}
-rebuild: 
-	docker rmi ${IMAGE}
-	docker build -t ${IMAGE} .
-push:
-	docker push ${IMAGE}
-all:
-	build
+	docker rmi --force ${IMAGE}:${TAG}
+push: 
+	docker push ${IMAGE}:${TAG}
+
+rebuild: clean build
+all: build
