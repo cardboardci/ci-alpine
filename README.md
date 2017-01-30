@@ -1,25 +1,11 @@
 # Dockerized Alpine
-[![Build Status](https://gitlab.com/jrbeverly-docker/docker-alpine/badges/master/build.svg)](https://gitlab.com/jrbeverly-docker/docker-alpine/commits/master) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000)](https://gitlab.com/jrbeverly-docker/docker-alpine/blob/master/LICENSE) [![Alpine v3.5](https://img.shields.io/badge/alpine-3.5-green.svg?maxAge=2592000)](https://alpinelinux.org/posts/Alpine-3.5.0-released.html)
+[![Build Status][ci]](https://gitlab.com/jrbeverly-docker/docker-alpine/commits/master) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000)](https://gitlab.com/jrbeverly-docker/docker-alpine/blob/master/LICENSE) [![Alpine v3.5](https://img.shields.io/badge/alpine-3.5-green.svg?maxAge=2592000)](https://alpinelinux.org/posts/Alpine-3.5.0-released.html)
 
 A super small Docker image based on Alpine Linux. 
 
 ## Usage
 
 It is suggested to use this as either a template or a base image.
-
-## Volumes
-
-Volumes exposed by the docker container.[^1]
-
-| Volume | Description |
-| ------ | ----------- |
-
-## Ports
-
-Ports exposed by the docker container.
-
-| Port | Description |
-| ---- | ----------- |
 
 ## Build Arguments
 
@@ -39,6 +25,20 @@ Environment variables used in the system.
 | HOME | / | The pathname of the user's home directory. |
 | S6_OVERLAY_VERSION | v1.18.1.5 | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
 
+## Volumes
+
+Volumes exposed by the docker container.[^1]
+
+| Volume | Description |
+| ------ | ----------- |
+
+## Ports
+
+Ports exposed by the docker container.
+
+| Port | Description |
+| ---- | ----------- |
+
 ### User and Group Mapping
 
 All processes within the docker container will be run as the **docker user**, a non-root user.  The **docker user** is created on build with the user id `DUID` and a member of a group with group id `DGID`.  
@@ -53,3 +53,4 @@ docker inspect -f '{{ index .Config.Labels "group" }}' $IMAGE
 The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`). 
 
 [^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#User-and-Group-Mapping)
+[ci]: https://gitlab.com/jrbeverly-docker/docker-alpine/badges/master/build.svg

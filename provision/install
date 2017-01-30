@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 cd /tmp/
 
 apk add --update --no-cache ca-certificates coreutils tzdata 
