@@ -1,5 +1,5 @@
 # Dockerized Alpine
-[![Build Status][ci-badge]][ci] [![MIT License][license-badge]][license] [![Alpine v3.5][alpine-badge]][alpine]
+[![Build Status][ci-badge]][ci][![MIT License][license-badge]][license][![Alpine v3.5][alpine-badge]][alpine]
 
 A super small Docker image based on Alpine Linux. 
 
@@ -13,12 +13,13 @@ Build tags available with the image `jrbeverly/alpine:{TAG}`.
 
 | Tag | Description |
 | --- | ----------- |
-| `latest` | An alpine image based on the latest alpine version. |
-| [`3.5`](/../tree/3.5) | An alpine image based on the alpine version 3.5. |
-| [`3.4`](/../tree/3.4) | An alpine image based on the alpine version 3.4. |
-| [`3.3`](/../tree/3.3) | An alpine image based on the alpine version 3.3. |
+| [`latest`](/../tree/master) | An alpine image based on the latest alpine version. |
+| [`3.5`](/../tree/V3.5) | An alpine image based on the alpine version 3.5. |
+| [`3.4`](/../tree/V3.4) | An alpine image based on the alpine version 3.4. |
+| [`3.3`](/../tree/V3.3) | An alpine image based on the alpine version 3.3. |
 
-## Build Arguments
+## Components
+### Build Arguments
 
 Build arguments used in the system.
 
@@ -27,7 +28,7 @@ Build arguments used in the system.
 | BUILD_DATE | - | The date which the image was built. |
 | VERSION | - | The version of the image. |
 
-## Environment Variables
+### Environment Variables
 
 Environment variables used in the system.
 
@@ -36,34 +37,36 @@ Environment variables used in the system.
 | HOME | / | The pathname of the user's home directory. |
 | S6_OVERLAY_VERSION | v1.18.1.5 | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
 
-## Volumes
+### Volumes
 
 Volumes exposed by the docker container.[^1]
 
 | Volume | Description |
 | ------ | ----------- |
 
-## Ports
+### Ports
 
 Ports exposed by the docker container.
 
 | Port | Description |
 | ---- | ----------- |
 
-### User and Group Mapping
+## Build Process
 
-All processes within the docker container will be run as the **docker user**, a non-root user.  The **docker user** is created on build with the user id `DUID` and a member of a group with group id `DGID`.  
+To build the docker image, use the included makefile.
 
-Any permissions on the host operating system (OS) associated with either the user (`DUID`) or group (`DGID`) will be associated with the docker container.  The values of `DUID` and `DGID` are visible in the [Build Arguments](#Build-Arguments), and can be accessed by the the command:
-
-```console
-docker inspect -f '{{ index .Config.Labels "user" }}' $IMAGE
-docker inspect -f '{{ index .Config.Labels "group" }}' $IMAGE
+```
+make build
 ```
 
-The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`). 
+You can also build the image manually, but it is recommended to use the makefile.
 
-[^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#User-and-Group-Mapping)
+```
+docker build \
+		--build-arg BUILD_DATE="$(date)" \
+		--build-arg VERSION="${VERSION}" \
+		--pull -t ${IMAGE}:${TAG} .
+```
 
 [ci-badge]: /../badges/master/build.svg
 [ci]: /../commits/master

@@ -1,9 +1,13 @@
 IMAGE := jrbeverly/alpine
 TAG := latest
-VERSION := 0.1.0
+VERSION := 1.0.0
+DATE := $(shell date +%Y-%m-%d:%H:%M:%S)
 
 build:
-	docker build --build-arg BUILD_DATE="$(shell date)" --build-arg VERSION="${VERSION}" --pull -t ${IMAGE}:${TAG} .
+	docker build \
+		--build-arg BUILD_DATE="${DATE}" \
+		--build-arg VERSION="${VERSION}" \
+		--pull -t ${IMAGE}:${TAG} .
 clean:
 	docker rmi --force ${IMAGE}:${TAG}
 push: 
