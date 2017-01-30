@@ -14,9 +14,9 @@ Build tags available with the image `jrbeverly/alpine:{TAG}`.
 | Tag | Description |
 | --- | ----------- |
 | `latest` | An alpine image based on the latest alpine version. |
-| [`3.5`](../tree/3.5) | An alpine image based on the alpine version 3.5. |
-| [`3.4`](../tree/3.4) | An alpine image based on the alpine version 3.4. |
-| [`3.3`](../tree/3.3) | An alpine image based on the alpine version 3.3. |
+| [`3.5`](/../tree/3.5) | An alpine image based on the alpine version 3.5. |
+| [`3.4`](/../tree/3.4) | An alpine image based on the alpine version 3.4. |
+| [`3.3`](/../tree/3.3) | An alpine image based on the alpine version 3.3. |
 
 ## Build Arguments
 
