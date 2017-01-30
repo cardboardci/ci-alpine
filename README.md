@@ -65,9 +65,9 @@ The notation of the build variables is short form for docker user id (`DUID`) an
 
 [^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#User-and-Group-Mapping)
 
-[ci-badge]: ../badges/master/build.svg
-[ci]: ../commits/master
+[ci-badge]: /../badges/master/build.svg
+[ci]: /../commits/master
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
-[license]: ../blob/master/LICENSE
+[license]: /../blob/master/LICENSE
 [alpine-badge]: https://img.shields.io/badge/alpine-3.5-green.svg?maxAge=2592000
 [alpine]: https://alpinelinux.org/posts/Alpine-3.5.0-released.html
