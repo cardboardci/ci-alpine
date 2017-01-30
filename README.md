@@ -7,6 +7,17 @@ A super small Docker image based on Alpine Linux.
 
 It is suggested to use this as either a template or a base image.
 
+## Image Tags
+
+Build tags available with the image `jrbeverly/alpine:{TAG}`.
+
+| Tag | Description |
+| --- | ----------- |
+| `latest` | An alpine image based on the latest alpine version. |
+| [`3.5`](../tree/3.5) | An alpine image based on the alpine version 3.5. |
+| [`3.4`](../tree/3.4) | An alpine image based on the alpine version 3.4. |
+| [`3.3`](../tree/3.3) | An alpine image based on the alpine version 3.3. |
+
 ## Build Arguments
 
 Build arguments used in the system.
@@ -53,9 +64,10 @@ docker inspect -f '{{ index .Config.Labels "group" }}' $IMAGE
 The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`). 
 
 [^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#User-and-Group-Mapping)
-[ci-badge]: ./badges/master/build.svg
-[ci]: ./commits/master
+
+[ci-badge]: ../badges/master/build.svg
+[ci]: ../commits/master
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
-[license]: ./master/LICENSE
+[license]: ../blob/master/LICENSE
 [alpine-badge]: https://img.shields.io/badge/alpine-3.5-green.svg?maxAge=2592000
 [alpine]: https://alpinelinux.org/posts/Alpine-3.5.0-released.html
