@@ -1,5 +1,5 @@
 # Dockerized Alpine
-[![Build Status][ci]](https://gitlab.com/jrbeverly-docker/docker-alpine/commits/master) [![MIT License](https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000)](https://gitlab.com/jrbeverly-docker/docker-alpine/blob/master/LICENSE) [![Alpine v3.5](https://img.shields.io/badge/alpine-3.5-green.svg?maxAge=2592000)](https://alpinelinux.org/posts/Alpine-3.5.0-released.html)
+[![Build Status][ci-badge]][ci] [![MIT License][license-badge]][license] [![Alpine v3.5][alpine-badge]][alpine]
 
 A super small Docker image based on Alpine Linux. 
 
@@ -53,4 +53,9 @@ docker inspect -f '{{ index .Config.Labels "group" }}' $IMAGE
 The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`). 
 
 [^1]: It is necessary to ensure that the **docker user** (`DUID`) has permission to access volumes. (see [User / Group Identifiers](#User-and-Group-Mapping)
-[ci]: https://gitlab.com/jrbeverly-docker/docker-alpine/badges/master/build.svg
+[ci-badge]: ./badges/master/build.svg
+[ci]: ./commits/master
+[license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
+[license]: ./master/LICENSE
+[alpine-badge]: https://img.shields.io/badge/alpine-3.5-green.svg?maxAge=2592000
+[alpine]: https://alpinelinux.org/posts/Alpine-3.5.0-released.html
