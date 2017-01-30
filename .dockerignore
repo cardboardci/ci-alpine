@@ -1,7 +1,7 @@
-# Git files
 .git
 .gitignore
-
-# Information files
+.gitlab-ci.yml
 LICENSE
+Makefile
 README.md
+docker-compose.yml
