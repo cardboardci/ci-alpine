@@ -1,5 +1,5 @@
 # Dockerized Alpine
-[![Build Status][ci-badge]][ci][![MIT License][license-badge]][license][![Alpine v3.5][alpine-badge]][alpine]
+[![Build Status][ci-badge]][ci][![MIT License][license-badge]][license][![Alpine][alpine-badge]][alpine]
 
 A super small Docker image based on Alpine Linux. 
 
