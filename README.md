@@ -39,7 +39,7 @@ Environment variables used in the system.
 
 ### Volumes
 
-Volumes exposed by the docker container.[^1]
+Volumes exposed by the docker container. [^1]
 
 | Volume | Description |
 | ------ | ----------- |
