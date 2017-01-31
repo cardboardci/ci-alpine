@@ -37,20 +37,6 @@ Environment variables used in the system.
 | HOME | / | The pathname of the user's home directory. |
 | S6_OVERLAY_VERSION | v1.18.1.5 | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
 
-### Volumes
-
-Volumes exposed by the docker container. [^1]
-
-| Volume | Description |
-| ------ | ----------- |
-
-### Ports
-
-Ports exposed by the docker container.
-
-| Port | Description |
-| ---- | ----------- |
-
 ## Build Process
 
 To build the docker image, use the included makefile.
