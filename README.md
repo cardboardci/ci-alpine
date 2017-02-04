@@ -1,5 +1,5 @@
 # Dockerized Alpine
-[![Build Status][ci-badge]][ci][![MIT License][license-badge]][license][![Alpine][alpine-badge]][alpine]
+[![MIT License][license-badge]][license][![Alpine][alpine-badge]][alpine]
 
 A super small Docker image based on Alpine Linux. 
 
@@ -9,14 +9,35 @@ It is suggested to use this as either a template or a base image.
 
 ## Image Tags
 
-Build tags available with the image `jrbeverly/alpine:{TAG}`.
+Build tags available with the image `jrbeverly/latex:{TAG}`.
 
-| Tag | Description |
-| --- | ----------- |
-| [`latest`](/../tree/master) | An alpine image based on the latest alpine version. |
-| [`3.5`](/../tree/V3.5) | An alpine image based on the alpine version 3.5. |
-| [`3.4`](/../tree/V3.4) | An alpine image based on the alpine version 3.4. |
-| [`3.3`](/../tree/V3.3) | An alpine image based on the alpine version 3.3. |
+<table>
+  <tr>
+    <th width="7%">Tag</th>
+    <th width="10%">Status</th> 
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><a href="/../tree/master">master</a></td>
+    <td><a href="/../commits/master"><img alt="Build Status" src="/../badges/master/build.svg"/></a></td>
+    <td>An alpine image based on the latest alpine version.</td>
+  </tr>
+  <tr>
+    <td><a href="/../tree/V3.5">V3.5</a></td>
+    <td><a href="/../commits/V3.5"><img alt="Build Status" src="/../badges/V3.5/build.svg"/></a></td>
+    <td>An alpine image based on the alpine version 3.5.</td>
+  </tr>
+  <tr>
+    <td><a href="/../tree/V3.4">V3.4</a></td>
+    <td><a href="/../commits/V3.4"><img alt="Build Status" src="/../badges/V3.4/build.svg"/></a></td>
+    <td>An alpine image based on the alpine version 3.4.</td> 
+  </tr>
+  <tr>
+    <td><a href="/../tree/V3.3">V3.3</a></td>
+    <td><a href="/../commits/V3.3"><img alt="Build Status" src="/../badges/V3.3/build.svg"/></a></td>
+    <td>An alpine image based on the alpine version 3.3.</td> 
+  </tr>
+</table>
 
 ## Components
 ### Build Arguments
@@ -54,8 +75,6 @@ docker build \
 		--pull -t ${IMAGE}:${TAG} .
 ```
 
-[ci-badge]: /../badges/master/build.svg
-[ci]: /../commits/master
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
 [license]: /../blob/master/LICENSE
 [alpine-badge]: https://img.shields.io/badge/alpine-3.5-green.svg?maxAge=2592000

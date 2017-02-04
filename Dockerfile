@@ -19,16 +19,6 @@ COPY rootfs/ /
 
 RUN rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
 
-# Ports
-#
-# Ports exposed by the docker container
-# EXPOSE 80
-
-# Volumes
-#
-# Volumes exposed by the docker container
-# VOLUME /media
-
 # Options
 #
 # Configuration options of the docker container
