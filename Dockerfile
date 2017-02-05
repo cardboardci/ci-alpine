@@ -4,7 +4,7 @@ MAINTAINER jrbeverly
 # Build Arguments
 #
 # Arguments used in the build process of the docker container.
-ARG S6_OVERLAY_VERSION=v1.18.1.5
+ARG S6_OVERLAY_VERSION
 
 # Environment Variables
 #

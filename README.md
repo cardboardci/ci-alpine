@@ -48,7 +48,7 @@ Build arguments used in the system.
 | -------- | ------- |------------ |
 | BUILD_DATE | - | The date which the image was built. |
 | VERSION | - | The version of the image. |
-| S6_OVERLAY_VERSION | v1.18.1.5 | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
+| S6_OVERLAY_VERSION | see [`Makefile.image.variable`](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
 
 ### Environment Variables
 
