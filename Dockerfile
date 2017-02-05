@@ -1,11 +1,15 @@
 FROM alpine:3.5
 MAINTAINER jrbeverly
 
+# Build Arguments
+#
+# Arguments used in the build process of the docker container.
+ARG S6_OVERLAY_VERSION=v1.18.1.5
+
 # Environment Variables
 #
 # Environment variables present in the docker container.
 ENV HOME=/
-ENV S6_OVERLAY_VERSION=v1.18.1.5
 
 # Provision
 #
@@ -16,8 +20,6 @@ COPY provision/install /tmp/install
 RUN sh /tmp/install ; sync; rm -f /tmp/install 
 
 COPY rootfs/ /
-
-RUN rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
 
 # Options
 #

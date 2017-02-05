@@ -9,7 +9,7 @@ It is suggested to use this as either a template or a base image.
 
 ## Image Tags
 
-Build tags available with the image `jrbeverly/latex:{TAG}`.
+Build tags available with the image `jrbeverly/alpine:{TAG}`.
 
 <table>
   <tr>
@@ -48,6 +48,7 @@ Build arguments used in the system.
 | -------- | ------- |------------ |
 | BUILD_DATE | - | The date which the image was built. |
 | VERSION | - | The version of the image. |
+| S6_OVERLAY_VERSION | v1.18.1.5 | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
 
 ### Environment Variables
 
@@ -56,7 +57,6 @@ Environment variables used in the system.
 | Variable | Default | Description |
 | -------- | ------- |------------ |
 | HOME | / | The pathname of the user's home directory. |
-| S6_OVERLAY_VERSION | v1.18.1.5 | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
 
 ## Build Process
 

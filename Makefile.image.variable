@@ -1,0 +1,4 @@
+IMAGE := jrbeverly/alpine
+VERSION := 1.0.0
+DATE := $(shell date +%Y-%m-%d:%H:%M:%S)
+OVERLAY_VERSION := v1.18.1.5
