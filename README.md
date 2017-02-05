@@ -1,5 +1,5 @@
 # Dockerized Alpine
-[![MIT License][license-badge]][license]
+[![MIT License][license-badge]][license][![S6 Overlay][s6-overlay-badge]][s6-overlay]
 
 A super small Docker image based on Alpine Linux. 
 
@@ -80,3 +80,5 @@ docker build \
 
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
 [license]: /../blob/master/LICENSE
+[s6-overlay-badge]: https://img.shields.io/badge/s6-1.19.1.1-green.svg?maxAge=2592000
+[s6-overlay]: https://github.com/just-containers/s6-overlay
