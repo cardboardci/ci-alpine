@@ -5,6 +5,7 @@ MAINTAINER jrbeverly
 #
 # Arguments used in the build process of the docker container.
 ARG S6_OVERLAY_VERSION
+ARG S6_OVERLAY_URL
 
 # Environment Variables
 #
@@ -14,10 +15,8 @@ ENV HOME=/
 # Provision
 #
 # Copy and execute provisioning scripts of the docker container.
-RUN apk add --no-cache bash
-
 COPY provision/install /tmp/install
-RUN sh /tmp/install ; sync; rm -f /tmp/install 
+RUN sh /tmp/install && rm -f /tmp/install 
 
 COPY rootfs/ /
 
@@ -40,3 +39,4 @@ LABEL app="Alpine Base Image"
 LABEL description="A docker image configured to handle small docker containers."
 LABEL version="${VERSION}"
 LABEL build_date="${BUILD_DATE}"
+LABEL s6_overlay="${S6_OVERLAY_VERSION}"

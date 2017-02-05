@@ -48,7 +48,8 @@ Build arguments used in the system.
 | -------- | ------- |------------ |
 | BUILD_DATE | - | The date which the image was built. |
 | VERSION | - | The version of the image. |
-| S6_OVERLAY_VERSION | see [`Makefile.image.variable`](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
+| S6\_OVERLAY\_VERSION | see [`Makefile.image.variable`](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
+| S6\_OVERLAY\_URL | see [`Makefile.image.variable`](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) URL download for containers. |
 
 ### Environment Variables
 
@@ -70,9 +71,11 @@ You can also build the image manually, but it is recommended to use the makefile
 
 ```
 docker build \
-		--build-arg BUILD_DATE="$(date)" \
-		--build-arg VERSION="${VERSION}" \
-		--pull -t ${IMAGE}:${TAG} .
+    --build-arg BUILD_DATE="${DATE}" \
+    --build-arg VERSION="${VERSION}" \
+    --build-arg S6_OVERLAY_VERSION="${S6_OVERLAY_VERSION}" \
+    --build-arg S6_OVERLAY_URL="${S6_OVERLAY_URL}" \
+    --pull -t ${IMAGE}:${TAG} .
 ```
 
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000

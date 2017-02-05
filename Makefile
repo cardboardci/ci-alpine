@@ -6,6 +6,7 @@ build:
 		--build-arg BUILD_DATE="${DATE}" \
 		--build-arg VERSION="${VERSION}" \
 		--build-arg S6_OVERLAY_VERSION="${S6_OVERLAY_VERSION}" \
+		--build-arg S6_OVERLAY_URL="${S6_OVERLAY_URL}" \
 		--pull -t ${IMAGE}:${TAG} .
 
 clean:
