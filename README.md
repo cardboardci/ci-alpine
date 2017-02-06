@@ -1,5 +1,5 @@
 # Dockerized Alpine
-[![MIT License][license-badge]][license][![Alpine][alpine-badge]][alpine]
+[![MIT License][license-badge]][license][![S6 Overlay][s6-overlay-badge]][s6-overlay]
 
 A super small Docker image based on Alpine Linux. 
 
@@ -9,7 +9,7 @@ It is suggested to use this as either a template or a base image.
 
 ## Image Tags
 
-Build tags available with the image `jrbeverly/latex:{TAG}`.
+Build tags available with the image `jrbeverly/alpine:{TAG}`.
 
 <table>
   <tr>
@@ -48,6 +48,8 @@ Build arguments used in the system.
 | -------- | ------- |------------ |
 | BUILD_DATE | - | The date which the image was built. |
 | VERSION | - | The version of the image. |
+| S6\_OVERLAY\_VERSION | see [Makefile.image.variable](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
+| S6\_OVERLAY\_URL | see [Makefile.image.variable](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) URL download for containers. |
 
 ### Environment Variables
 
@@ -56,7 +58,6 @@ Environment variables used in the system.
 | Variable | Default | Description |
 | -------- | ------- |------------ |
 | HOME | / | The pathname of the user's home directory. |
-| S6_OVERLAY_VERSION | v1.18.1.5 | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
 
 ## Build Process
 
@@ -70,12 +71,14 @@ You can also build the image manually, but it is recommended to use the makefile
 
 ```
 docker build \
-		--build-arg BUILD_DATE="$(date)" \
-		--build-arg VERSION="${VERSION}" \
-		--pull -t ${IMAGE}:${TAG} .
+    --build-arg BUILD_DATE="${DATE}" \
+    --build-arg VERSION="${VERSION}" \
+    --build-arg S6_OVERLAY_VERSION="${S6_OVERLAY_VERSION}" \
+    --build-arg S6_OVERLAY_URL="${S6_OVERLAY_URL}" \
+    --pull -t ${IMAGE}:${TAG} .
 ```
 
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
 [license]: /../blob/master/LICENSE
-[alpine-badge]: https://img.shields.io/badge/alpine-3.5-green.svg?maxAge=2592000
-[alpine]: https://alpinelinux.org/posts/Alpine-3.5.0-released.html
+[s6-overlay-badge]: https://img.shields.io/badge/s6-1.19.1.1-green.svg?maxAge=2592000
+[s6-overlay]: https://github.com/just-containers/s6-overlay

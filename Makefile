@@ -1,14 +1,12 @@
-IMAGE := jrbeverly/alpine
-VERSION := 1.0.0
-DATE := $(shell date +%Y-%m-%d:%H:%M:%S)
-
-include Makefile.variable
+include Makefile.image.variable
+include Makefile.version.variable
 
 build:
 	docker build \
 		--build-arg BUILD_DATE="${DATE}" \
 		--build-arg VERSION="${VERSION}" \
-		--build-arg SCHEME="${SCHEME}" \
+		--build-arg S6_OVERLAY_VERSION="${S6_OVERLAY_VERSION}" \
+		--build-arg S6_OVERLAY_URL="${S6_OVERLAY_URL}" \
 		--pull -t ${IMAGE}:${TAG} .
 
 clean:

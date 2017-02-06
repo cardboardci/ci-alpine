@@ -1,23 +1,24 @@
 FROM alpine:3.5
 MAINTAINER jrbeverly
 
+# Build Arguments
+#
+# Arguments used in the build process of the docker container.
+ARG S6_OVERLAY_VERSION
+ARG S6_OVERLAY_URL
+
 # Environment Variables
 #
 # Environment variables present in the docker container.
 ENV HOME=/
-ENV S6_OVERLAY_VERSION=v1.18.1.5
 
 # Provision
 #
 # Copy and execute provisioning scripts of the docker container.
-RUN apk add --no-cache bash
-
 COPY provision/install /tmp/install
-RUN sh /tmp/install ; sync; rm -f /tmp/install 
+RUN sh /tmp/install && rm -f /tmp/install 
 
 COPY rootfs/ /
-
-RUN rm -rf /tmp/* /var/tmp/* /var/cache/apk/*
 
 # Options
 #
@@ -38,3 +39,4 @@ LABEL app="Alpine Base Image"
 LABEL description="A docker image configured to handle small docker containers."
 LABEL version="${VERSION}"
 LABEL build_date="${BUILD_DATE}"
+LABEL s6_overlay="${S6_OVERLAY_VERSION}"
