@@ -11,33 +11,13 @@ It is suggested to use this as either a template or a base image.
 
 Build tags available with the image `jrbeverly/alpine:{TAG}`.
 
-<table>
-  <tr>
-    <th width="7%">Tag</th>
-    <th width="10%">Status</th> 
-    <th>Description</th>
-  </tr>
-  <tr>
-    <td><a href="/../tree/master">master</a></td>
-    <td><a href="/../commits/master"><img alt="Build Status" src="/../badges/master/build.svg"/></a></td>
-    <td>An alpine image based on the latest alpine version.</td>
-  </tr>
-  <tr>
-    <td><a href="/../tree/V3.5">V3.5</a></td>
-    <td><a href="/../commits/V3.5"><img alt="Build Status" src="/../badges/V3.5/build.svg"/></a></td>
-    <td>An alpine image based on the alpine version 3.5.</td>
-  </tr>
-  <tr>
-    <td><a href="/../tree/V3.4">V3.4</a></td>
-    <td><a href="/../commits/V3.4"><img alt="Build Status" src="/../badges/V3.4/build.svg"/></a></td>
-    <td>An alpine image based on the alpine version 3.4.</td> 
-  </tr>
-  <tr>
-    <td><a href="/../tree/V3.3">V3.3</a></td>
-    <td><a href="/../commits/V3.3"><img alt="Build Status" src="/../badges/V3.3/build.svg"/></a></td>
-    <td>An alpine image based on the alpine version 3.3.</td> 
-  </tr>
-</table>
+| Tag | Status | Description |
+| --- | ------ | ----------- |
+| [master](/../tree/master) | [![build status](/../badges/master/build.svg)](/../commits/master) | An alpine image based on the latest alpine version. |
+| [V3.5](/../tree/V3.5) | [![build status](/../badges/V3.5/build.svg)](/../commits/V3.5) | An alpine image based on the alpine version 3.5. |
+| [V3.4](/../tree/V3.4) | [![build status](/../badges/V3.4/build.svg)](/../commits/V3.4) | An alpine image based on the alpine version 3.4. |
+| [V3.3](/../tree/V3.3) | [![build status](/../badges/V3.3/build.svg)](/../commits/V3.3) | An alpine image based on the alpine version 3.3. |
+
 
 ## Components
 ### Build Arguments
@@ -45,7 +25,7 @@ Build tags available with the image `jrbeverly/alpine:{TAG}`.
 Build arguments used in the system.
 
 | Variable | Default | Description |
-| -------- | ------- |------------ |
+| -------- | ------- | ----------- |
 | BUILD_DATE | - | The date which the image was built. |
 | VERSION | - | The version of the image. |
 | S6\_OVERLAY\_VERSION | see [Makefile.image.variable](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
@@ -67,7 +47,7 @@ To build the docker image, use the included makefile.
 make build
 ```
 
-You can also build the image manually, but it is recommended to use the makefile.
+You can also build the image manually, but it is recommended to use the makefile to ensure all build arguments are provided.
 
 ```
 docker build \
