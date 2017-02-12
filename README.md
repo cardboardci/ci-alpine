@@ -1,6 +1,8 @@
 # Dockerized Alpine
 [![MIT License][license-badge]][license][![S6 Overlay][s6-overlay-badge]][s6-overlay]
 
+## Summary
+
 A super small Docker image based on Alpine Linux. 
 
 ## Usage
@@ -25,10 +27,10 @@ Build arguments used in the system.
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| BUILD_DATE | - | The date which the image was built. |
-| VERSION | - | The version of the image. |
-| S6\_OVERLAY\_VERSION | see [Makefile.image.variable](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
-| S6\_OVERLAY\_URL | see [Makefile.image.variable](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) URL download for containers. |
+| BUILD_DATE | see [Makefile](Makefile.image.variable) | The date which the image was built. |
+| VERSION | see [Makefile](Makefile.image.variable) | The version of the image. |
+| S6\_OVERLAY\_VERSION | see [Makefile](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
+| S6\_OVERLAY\_URL | see [Makefile](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) URL download for containers. |
 
 ### Environment Variables
 
