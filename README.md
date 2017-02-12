@@ -18,7 +18,6 @@ Build tags available with the image `jrbeverly/alpine:{TAG}`.
 | [V3.4](/../tree/V3.4) | [![build status](/../badges/V3.4/build.svg)](/../commits/V3.4) | An alpine image based on the alpine version 3.4. |
 | [V3.3](/../tree/V3.3) | [![build status](/../badges/V3.3/build.svg)](/../commits/V3.3) | An alpine image based on the alpine version 3.3. |
 
-
 ## Components
 ### Build Arguments
 
