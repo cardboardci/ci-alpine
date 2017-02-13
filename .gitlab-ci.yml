@@ -14,7 +14,9 @@ stages:
 build:
   stage: build
   script:
-    - cd build/ && sh make_build && docker push registry.gitlab.com/$(cat *.var)
+    - cd build/ && sh make_build
+    - ls
+    - docker push registry.gitlab.com/$(cat *.var)
   only:
     - master
   artifacts:
