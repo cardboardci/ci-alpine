@@ -1,0 +1,203 @@
+#!/bin/bash
+set -e
+
+# Load variables
+#
+# Load all variables used in the build process.
+for vars in variable.*; do
+   source $vars
+done
+
+# Variables
+#
+# List of variables used in the build process.
+VAR_DIR=".build"
+CONTAINER_REGISTRY="$VAR_DIR/REGISTRY.var"
+CONTAINER_NAMESPACE="$VAR_DIR/NAMESPACE.var"
+CONTAINER_IMAGE="$VAR_DIR/IMAGE.var"
+CONTAINER_TAG="$VAR_DIR/TAG.var"
+CONTAINER_CONTAINER="$VAR_DIR/CONTAINER.var"
+mkdir -p $VAR_DIR
+
+DOCKERFILE="../src/Dockerfile"
+DOCKERDIR="../src/."
+
+# Build Functions
+#
+# Functions that control behaviour of the build process.
+
+make () { 
+    source versions/${IMAGE_VERSION}
+
+    TEMP_REGISTRY=$1
+    TEMP_NAMESPACE=$2
+    TEMP_IMAGE=$3
+    TEMP_TAG=$4
+    TEMP_CONTAINER=${TEMP_REGISTRY}/${TEMP_NAMESPACE}/${TEMP_IMAGE}:${TEMP_TAG}    
+    
+    echo "Deploying image to a repository [$TEMP_CONTAINER]"
+
+    docker build \
+        --build-arg BUILD_DATE="${DATE}"\
+        --build-arg VERSION="${VERSION}"\
+        --build-arg S6_OVERLAY_VERSION="${S6_OVERLAY_VERSION}"\
+        --build-arg S6_OVERLAY_URL="${S6_OVERLAY_URL}"\
+        --pull -t ${TEMP_CONTAINER} $DOCKERDIR
+
+    echo "${TEMP_REGISTRY}" > $CONTAINER_REGISTRY
+    echo "${TEMP_NAMESPACE}" > $CONTAINER_NAMESPACE
+    echo "${TEMP_IMAGE}" > $CONTAINER_IMAGE
+    echo "${TEMP_TAG}" > $CONTAINER_TAG
+    echo "${TEMP_CONTAINER}" > $CONTAINER_CONTAINER
+}
+
+build () { 
+    set -x
+    source versions/${IMAGE_VERSION}
+
+    make ${REGISTRY} ${NAMESPACE} ${IMAGE} ${TAG}
+}
+
+version () {
+    set -x
+    source versions/$1.variable
+
+    SOURCE_FROM=$(grep '\<FROM\>' $DOCKERFILE)
+    TARGET_FROM="FROM ${FROM}"
+    sed -i "s/${SOURCE_FROM}/${TARGET_FROM}/g" $DOCKERFILE
+
+    make ${REGISTRY} ${NAMESPACE} ${IMAGE} ${TAG}
+
+    sed -i "s/${TARGET_FROM}/${SOURCE_FROM}/g" $DOCKERFILE
+}
+
+image () {
+    set -x
+    source versions/${IMAGE_VERSION}
+
+    TEMP_TAG=$(date +%Y%m%d%H%M%S)-dev
+    
+    make ${REGISTRY} ${NAMESPACE} ${IMAGE} ${TEMP_TAG}
+}
+
+all () {
+    set -x
+
+    for entry in "versions"/*
+    do
+        source $entry
+
+        SOURCE_FROM=$(grep '\<FROM\>' $DOCKERFILE)
+        TARGET_FROM="FROM ${FROM}"
+        sed -i "s/${SOURCE_FROM}/${TARGET_FROM}/g" $DOCKERFILE
+
+        docker build \
+            --build-arg BUILD_DATE="${DATE}"\
+            --build-arg VERSION="${VERSION}"\
+            --build-arg S6_OVERLAY_VERSION="${S6_OVERLAY_VERSION}"\
+            --build-arg S6_OVERLAY_URL="${S6_OVERLAY_URL}"\
+            --pull -t ${IMAGE}:${TAG} $DOCKERDIR
+
+        sed -i "s/${TARGET_FROM}/${SOURCE_FROM}/g" $DOCKERFILE
+    done
+}
+
+# Storage Functions
+#
+# Functions that handle the images produced by the build process
+
+deploy () {
+    if [ -f "$CONTAINER_CONTAINER" ]
+    then      
+        TEMP_CONTAINER=$(cat $CONTAINER_CONTAINER)
+        echo "Deploying image to a repository [$TEMP_CONTAINER]"  
+
+        set -x
+        docker push $TEMP_CONTAINER
+    else
+        echo "$CONTAINER_CONTAINER not found."
+    fi
+}
+
+release () {
+    source versions/${IMAGE_VERSION}
+
+    if [ -f "$CONTAINER_CONTAINER" ]
+    then
+        set -x
+        TEMP_CONTAINER=$(cat $CONTAINER_CONTAINER)
+        RELEASE_IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE}:${TAG}
+
+        docker tag ${TEMP_CONTAINER} ${RELEASE_IMAGE}
+        docker rmi ${TEMP_CONTAINER}
+        docker push ${RELEASE_IMAGE}
+    else
+        echo "$CONTAINER_CONTAINER not found."
+    fi
+}
+
+pull () {
+    if [ -f "$CONTAINER_CONTAINER" ]
+    then
+        set -x
+        TEMP_CONTAINER=$(cat $CONTAINER_CONTAINER)
+        
+        echo "Pull image from repository [$TEMP_CONTAINER]"
+
+        docker pull $TEMP_CONTAINER
+    else
+        echo "$CONTAINER_IMAGE not found."
+    fi
+}
+
+# Tidy Functions
+#
+# Functions that tidy up after the build process.
+
+clean () {
+    set -x
+    source versions/${IMAGE_VERSION}
+
+    if [ -f "$CONTAINER_IMAGE" ]
+    then
+        TEMP_IMAGE=$(cat $CONTAINER_IMAGE)
+        docker rmi ${TEMP_IMAGE}
+    else
+        echo "$CONTAINER_IMAGE not found."
+    fi
+}
+
+prune () {
+    set -x
+
+    docker images -q -f dangling=true | xargs --no-run-if-empty docker rmi
+}
+
+purge () {
+    set -x
+
+    docker rmi $(docker images | grep '.*-dev' | awk '{print $3}')
+}
+
+
+# Tests Functions
+#
+# Functions that handle testing of the image.
+
+test () {
+    set -x
+    source versions/${IMAGE_VERSION}
+
+    if [ -f "$CONTAINER_IMAGE" ]
+    then
+        TEMP_IMAGE=$(cat $CONTAINER_IMAGE)
+        echo "Nothing to test on ${TEMP_IMAGE}"
+    else
+        echo "$CONTAINER_IMAGE not found."
+    fi
+}
+
+# Execution
+#
+# Executing the script.
+"$@"

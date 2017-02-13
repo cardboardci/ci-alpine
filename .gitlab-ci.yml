@@ -6,6 +6,9 @@ services:
 before_script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com 
 
+variables:
+  CONTAINER_REGISTRY: registry.gitlab.com
+
 stages:
   - build
   - test
@@ -14,34 +17,30 @@ stages:
 build:
   stage: build
   script:
-    - cd build/ && sh make_build
-    - docker tag $(cat IMAGE.var) registry.gitlab.com/jrbeverly-docker/docker-alpine:$(cat TAG.var)
-    - docker push registry.gitlab.com/jrbeverly-docker/docker-alpine:$(cat TAG.var)
+    - cd build/ && sh docker-make make $CONTAINER_REGISTRY $CI_PROJECT_NAMESPACE $CI_PROJECT_NAME $CI_BUILD_ID && sh docker-make deploy
   only:
     - master
   artifacts:
     paths:
-      - build/*.var
+      - build/.build/
 
 test:
   stage: test
   script:
-    - docker pull registry.gitlab.com/jrbeverly-docker/docker-alpine:$(cat build/TAG.var)
-    - cd build/ && sh make_test
+    - cd build/ && sh docker-make pull && sh docker-make test
   dependencies:
     - build
   only:
     - master
   artifacts:
     paths:
-      - build/*.var
+      - build/.build/
 
 release:
   stage: release
   script:
-    - docker pull registry.gitlab.com/jrbeverly-docker/docker-alpine:$(cat build/TAG.var)
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
-    - cd build/ && sh make_deploy
+    - cd build/ && cd build/ && sh docker-make pull && sh docker-make release
   dependencies:
     - build
   only:
