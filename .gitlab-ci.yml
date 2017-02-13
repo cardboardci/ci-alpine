@@ -18,21 +18,21 @@ stages:
 configure:
   stage: configure
   script:
-    - cd build/ && sh docker-make configure -r $CONTAINER_REGISTRY -n $CI_PROJECT_NAMESPACE -i $CI_PROJECT_NAME -t $CI_BUILD_ID -v latest -o latest.build
+    - cd build/ && sh docker-make configure -r $CONTAINER_REGISTRY -n $CI_PROJECT_NAMESPACE -i $CI_PROJECT_NAME -t $CI_BUILD_ID -v latest
   artifacts:
     paths:
-      - build/*.build
+      - build/docker.build
     expire_in: 2 hours
 
 build:
   stage: build
   script:
-    - cd build/ && sh docker-make all && sh docker-make push
+    - cd build/ && sh docker-make build && sh docker-make push
   dependencies:
     - configure
   artifacts:
     paths:
-      - build/*.build
+      - build/docker.build
     expire_in: 2 hours
 
 test:
@@ -43,7 +43,7 @@ test:
     - build
   artifacts:
     paths:
-      - build/*.build
+      - build/docker.build
     expire_in: 2 hours
     
 release:
