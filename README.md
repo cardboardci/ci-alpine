@@ -27,7 +27,6 @@ Build arguments used in the system.
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| BUILD_DATE | [variable.image](build/variable.image) | The date which the image was built. |
 | VERSION | [variable.image](build/variable.image) | The version of the image. |
 | S6\_OVERLAY\_VERSION | [variable.app](build/variable.image) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
 | S6\_OVERLAY\_URL | [variable.app](build/variable.image) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) URL download for containers. |

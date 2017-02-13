@@ -29,7 +29,6 @@ CMD []
 # Metdata Arguments
 #
 # Arguments used for the metadata of the docker container.
-ARG BUILD_DATE
 ARG VERSION
 
 # Metadata 
@@ -38,5 +37,4 @@ ARG VERSION
 LABEL app="Alpine Base Image"
 LABEL description="A docker image configured to handle small docker containers."
 LABEL version="${VERSION}"
-LABEL build_date="${BUILD_DATE}"
 LABEL s6_overlay="${S6_OVERLAY_VERSION}"
