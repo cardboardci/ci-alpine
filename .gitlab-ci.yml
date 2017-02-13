@@ -4,7 +4,7 @@ services:
   - docker:dind
 
 before_script:
-  - docker login registry.gitlab.com
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com 
 
 stages:
   - build
@@ -39,7 +39,7 @@ release:
   stage: release
   script:
     - docker pull registry.gitlab.com/$(cat build/*.var)
-    - docker login -u $CI_BUILD_USER -p $CI_BUILD_TOKEN
+    - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
     - cd build/ && ./make_deploy
   dependencies:
     - build
