@@ -197,6 +197,36 @@ test () {
     fi
 }
 
+# Help
+#
+# A command line help utility
+help() {
+    echo "Usage: $0 COMMAND [arg...]" >&2
+    echo
+    echo "A utility for bundling common docker build utilities."
+    echo 
+    echo "Commands:"
+    echo "   all        Builds all image for a Dockerfile"    
+    echo "   build      Build an image from a Dockerfile" 
+    echo "   clean      Removes the current working image" 
+    echo "   deploy     Push an image or a repository to a registry" 
+    echo "   image      Builds a temporary image from a Dockerfile" 
+    echo "   make       Build an image from a Dockerfile" 
+    echo "   prune      Remove one or more unused images" 
+    echo "   pull       Pull an image or a repository from a registry" 
+    echo "   push       Push an image or a repository to a registry" 
+    echo "   purge      Remove one of more images" 
+    echo "   release    Push a release image to a registry" 
+    echo "   test       Runs tests against a image." 
+    echo "   version    Builds a temporary image for a specific Dockerfile version" 
+    echo
+    echo "Usage: $0 make REGISTRY | NAMESPACE | IMAGE | TAG"
+    echo "Usage: $0 version VERSION"
+    echo
+
+    exit 1
+}
+
 # Execution
 #
 # Executing the script.

@@ -1,5 +1,5 @@
 # Dockerized Alpine
-[![MIT License][license-badge]][license][![S6 Overlay][s6-overlay-badge]][s6-overlay]
+[![MIT License][license-badge]][license]
 
 ## Summary
 
@@ -13,12 +13,12 @@ It is suggested to use this as either a template or a base image.
 
 Build tags available with the image `jrbeverly/alpine:{TAG}`.
 
-| Tag | Status | Description |
+| Tag | Information | Description |
 | --- | ------ | ----------- |
-| [master](/../tree/master) | [![build status](/../badges/master/build.svg)](/../commits/master) | An alpine image based on the latest alpine version. |
-| [V3.5](/../tree/V3.5) | [![build status](/../badges/V3.5/build.svg)](/../commits/V3.5) | An alpine image based on the alpine version 3.5. |
-| [V3.4](/../tree/V3.4) | [![build status](/../badges/V3.4/build.svg)](/../commits/V3.4) | An alpine image based on the alpine version 3.4. |
-| [V3.3](/../tree/V3.3) | [![build status](/../badges/V3.3/build.svg)](/../commits/V3.3) | An alpine image based on the alpine version 3.3. |
+| [![](https://images.microbadger.com/badges/version/jrbeverly/alpine.svg)](https://microbadger.com/images/jrbeverly/alpine "Get your own version badge on microbadger.com") | [![](https://images.microbadger.com/badges/image/jrbeverly/alpine.svg)](https://microbadger.com/images/jrbeverly/alpine "Get your own image badge on microbadger.com") | An alpine image based on the latest alpine version. |
+| [![](https://images.microbadger.com/badges/version/jrbeverly/alpine:3.5.svg)](https://microbadger.com/images/jrbeverly/alpine:3.5 "Get your own version badge on microbadger.com") | [![](https://images.microbadger.com/badges/image/jrbeverly/alpine:3.5.svg)](https://microbadger.com/images/jrbeverly/alpine:3.5 "Get your own image badge on microbadger.com") | An alpine image based on the alpine version 3.5. |
+| [![](https://images.microbadger.com/badges/version/jrbeverly/alpine:3.4.svg)](https://microbadger.com/images/jrbeverly/alpine:3.4 "Get your own version badge on microbadger.com") | [![](https://images.microbadger.com/badges/image/jrbeverly/alpine:3.4.svg)](https://microbadger.com/images/jrbeverly/alpine:3.4 "Get your own image badge on microbadger.com") | An alpine image based on the alpine version 3.4. |
+| [![](https://images.microbadger.com/badges/version/jrbeverly/alpine:3.3.svg)](https://microbadger.com/images/jrbeverly/alpine:3.3 "Get your own version badge on microbadger.com") | [![](https://images.microbadger.com/badges/image/jrbeverly/alpine:3.3.svg)](https://microbadger.com/images/jrbeverly/alpine:3.3 "Get your own image badge on microbadger.com") | An alpine image based on the alpine version 3.3. |
 
 ## Components
 ### Build Arguments
@@ -27,10 +27,10 @@ Build arguments used in the system.
 
 | Variable | Default | Description |
 | -------- | ------- | ----------- |
-| BUILD_DATE | see [Makefile](Makefile.image.variable) | The date which the image was built. |
-| VERSION | see [Makefile](Makefile.image.variable) | The version of the image. |
-| S6\_OVERLAY\_VERSION | see [Makefile](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
-| S6\_OVERLAY\_URL | see [Makefile](Makefile.image.variable) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) URL download for containers. |
+| BUILD_DATE | [variable.image](build/variable.image) | The date which the image was built. |
+| VERSION | [variable.image](build/variable.image) | The version of the image. |
+| S6\_OVERLAY\_VERSION | [variable.app](build/variable.image) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) for containers. |
+| S6\_OVERLAY\_URL | [variable.app](build/variable.image) | The [S6 Overlay](https://github.com/just-containers/s6-overlay/releases) URL download for containers. |
 
 ### Environment Variables
 
@@ -42,24 +42,19 @@ Environment variables used in the system.
 
 ## Build Process
 
-To build the docker image, use the included makefile.
+To build the docker image, use the included `docker-make` script.  
 
 ```
-make build
+./docker-make build
 ```
 
-You can also build the image manually, but it is recommended to use the makefile to ensure all build arguments are provided.
+You can get a list of commands available from `docker-make` by using the `help` option.
 
 ```
-docker build \
-    --build-arg BUILD_DATE="${DATE}" \
-    --build-arg VERSION="${VERSION}" \
-    --build-arg S6_OVERLAY_VERSION="${S6_OVERLAY_VERSION}" \
-    --build-arg S6_OVERLAY_URL="${S6_OVERLAY_URL}" \
-    --pull -t ${IMAGE}:${TAG} .
+./docker-make help
 ```
+
+You can also build the image manually, but it is recommended to use the `docker-make` to ensure all build arguments are provided.
 
 [license-badge]: https://img.shields.io/badge/license-MIT-blue.svg?maxAge=2592000
 [license]: /../blob/master/LICENSE
-[s6-overlay-badge]: https://img.shields.io/badge/s6-1.19.1.1-green.svg?maxAge=2592000
-[s6-overlay]: https://github.com/just-containers/s6-overlay
