@@ -16,9 +16,6 @@ build:
   script:
     - make build
     - make save
-  artifacts:
-    paths:
-      - image.tar
   only:
     - /^V.*$/
     - master
@@ -27,9 +24,6 @@ test:
   stage: test
   script:
     - echo "No testing at the moment"
-  artifacts:
-    paths:
-      - image.tar
   dependencies:
     - build
   only:
