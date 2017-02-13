@@ -15,8 +15,8 @@ build:
   stage: build
   script:
     - cd build/ && sh make_build
-    - docker tag $(cat *.var) registry.gitlab.com/$(cat *.var)
-    - docker push registry.gitlab.com/$(cat *.var)
+    - docker tag $(cat IMAGE.var) registry.gitlab.com/jrbeverly-docker/docker-alpine:$(cat TAG.var)
+    - docker push registry.gitlab.com/jrbeverly-docker/docker-alpine:$(cat TAG.var)
   only:
     - master
   artifacts:
@@ -26,7 +26,7 @@ build:
 test:
   stage: test
   script:
-    - docker pull registry.gitlab.com/$(cat build/*.var)
+    - docker pull registry.gitlab.com/jrbeverly-docker/docker-alpine:$(cat build/TAG.var)
     - cd build/ && sh make_test
   dependencies:
     - build
@@ -39,7 +39,7 @@ test:
 release:
   stage: release
   script:
-    - docker pull registry.gitlab.com/$(cat build/*.var)
+    - docker pull registry.gitlab.com/jrbeverly-docker/docker-alpine:$(cat build/TAG.var)
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
     - cd build/ && sh make_deploy
   dependencies:

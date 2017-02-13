@@ -21,4 +21,6 @@ docker build \
     --build-arg S6_OVERLAY_URL="${S6_OVERLAY_URL}"\
     --pull -t ${CONTAINER_IMAGE} ../.
 
-echo "${CONTAINER_IMAGE}" > CONTAINER_IMAGE.var
+echo "${TEMP_TAG}" > TAG.var
+echo "${IMAGE}" > NAME.var
+echo "${CONTAINER_IMAGE}" > IMAGE.var
