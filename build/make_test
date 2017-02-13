@@ -1,0 +1,22 @@
+#!/bin/bash
+set -ex
+
+# Load variables
+#
+# Load all variables used in the build process.
+for vars in variable*; do
+   source $vars
+done
+source versions/${IMAGE_VERSION}
+
+# Execution
+#
+# Executing the script.
+IMG="CONTAINER_IMAGE.var"
+if [ -f "$IMG" ]
+then
+    CONTAINER_IMAGE=$(cat $IMG)
+    echo "Nothing to test on ${CONTAINER_IMAGE}"
+else
+	echo "$IMG not found."
+fi

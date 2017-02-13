@@ -4,7 +4,7 @@ services:
   - docker:dind
 
 before_script:
-  - apk --no-cache add make
+  - docker login registry.gitlab.com
 
 stages:
   - build
@@ -14,30 +14,34 @@ stages:
 build:
   stage: build
   script:
-    - make build
-    - make save
+    - cd build/ && ./make_build
+    - docker push registry.gitlab.com/$(cat build/*.var)
   only:
-    - /^V.*$/
     - master
-    
+  artifacts:
+    paths:
+      - build/*.var
+
 test:
   stage: test
   script:
-    - echo "No testing at the moment"
+    - docker pull registry.gitlab.com/$(cat build/*.var)
+    - cd build/ && ./make_test
   dependencies:
     - build
   only:
-    - /^V.*$/
     - master
+  artifacts:
+    paths:
+      - build/*.var
 
 release:
   stage: release
   script:
-    - docker load --input=image.tar
+    - docker pull registry.gitlab.com/$(cat build/*.var)
     - docker login -u $CI_BUILD_USER -p $CI_BUILD_TOKEN
-    - make push
+    - cd build/ && ./make_deploy
   dependencies:
     - build
   only:
-    - /^V.*$/
     - master
