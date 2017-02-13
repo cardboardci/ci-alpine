@@ -14,8 +14,8 @@ stages:
 build:
   stage: build
   script:
-    - cd build/ && sh make_build
-    - docker push registry.gitlab.com/$(cat *.var)
+    - (cd build/ && sh make_build)
+    - docker push registry.gitlab.com/$(cat build/*.var)
   only:
     - master
   artifacts:
@@ -25,7 +25,7 @@ build:
 test:
   stage: test
   script:
-    - docker pull registry.gitlab.com/$(cat *.var)
+    - docker pull registry.gitlab.com/$(cat build/*.var)
     - cd build/ && sh make_test
   dependencies:
     - build
@@ -38,7 +38,7 @@ test:
 release:
   stage: release
   script:
-    - docker pull registry.gitlab.com/$(cat *.var)
+    - docker pull registry.gitlab.com/$(cat build/*.var)
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
     - cd build/ && sh make_deploy
   dependencies:
