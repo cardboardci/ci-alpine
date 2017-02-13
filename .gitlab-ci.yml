@@ -40,7 +40,7 @@ release:
   stage: release
   script:
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
-    - cd build/ && cd build/ && sh docker-make pull && sh docker-make release
+    - cd build/ && sh docker-make pull && sh docker-make release
   dependencies:
     - build
   only:
