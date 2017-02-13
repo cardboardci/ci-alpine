@@ -1,2 +1,2 @@
-TAG=latest
 FROM=alpine:3.5
+TAG=latest

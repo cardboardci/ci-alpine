@@ -1,96 +1,100 @@
 #!/bin/bash
 set -e
 
-# Load variables
-#
-# Load all variables used in the build process.
-for vars in variable.*; do
-   source $vars
-done
-
 # Variables
 #
 # List of variables used in the build process.
-VAR_DIR=".build"
-CONTAINER_REGISTRY="$VAR_DIR/REGISTRY.var"
-CONTAINER_NAMESPACE="$VAR_DIR/NAMESPACE.var"
-CONTAINER_IMAGE="$VAR_DIR/IMAGE.var"
-CONTAINER_TAG="$VAR_DIR/TAG.var"
-CONTAINER_CONTAINER="$VAR_DIR/CONTAINER.var"
-mkdir -p $VAR_DIR
+DEFAULT_BUILD="docker.build"
 
 DOCKERFILE="../src/Dockerfile"
 DOCKERDIR="../src/."
+
+# Preconfig Functions
+#
+# Functions used to preconfigure the build process.
+
+configure () {
+    DEV_REGISTRY=""
+    DEV_NAMESPACE=""
+    DEV_IMAGE=""
+    DEV_TAG=""
+    DEV_VERSION=""
+
+    output=$DEFAULT_BUILD
+
+    while getopts "h?:r:n:i:t:v:o:" opt; do
+        case $opt in
+            h|\?)
+                echo "Usage: $0 configure -r REGISTRY -n NAMESPACE -i IMAGE -t TAG -v VERSION -o OUTPUT"
+                exit 0
+            ;;
+            r) DEV_REGISTRY=$OPTARG
+            ;;
+            n) DEV_NAMESPACE=$OPTARG
+            ;;
+            i) DEV_IMAGE=$OPTARG
+            ;;
+            t) DEV_TAG=$OPTARG
+            ;;
+            v) DEV_VERSION=$OPTARG
+            ;;
+            o) output=$OPTARG
+            ;;
+        esac
+    done
+
+    rm -f $output
+    echo "DEV_REGISTRY=$DEV_REGISTRY" >> $output
+    echo "DEV_NAMESPACE=$DEV_NAMESPACE" >> $output
+    echo "DEV_IMAGE=$DEV_IMAGE" >> $output
+    echo "DEV_TAG=$DEV_TAG" >> $output
+    echo "DEV_VERSION=$DEV_VERSION" >> $output
+    for vars in variable.*; do        
+        cat $vars >> $output
+        echo >> $output
+    done
+    cat versions/$DEV_VERSION.variable >> $output
+}
 
 # Build Functions
 #
 # Functions that control behaviour of the build process.
 
-make () { 
-    TEMP_REGISTRY=$1
-    TEMP_NAMESPACE=$2
-    TEMP_IMAGE=$3
-    TEMP_TAG=$4
-    TEMP_CONTAINER=${TEMP_REGISTRY}/${TEMP_NAMESPACE}/${TEMP_IMAGE}:${TEMP_TAG}    
-    
-    echo "Deploying image to a repository [$TEMP_CONTAINER]"
-
-    docker build \
-        --build-arg VERSION="${VERSION}"\
-        --build-arg S6_OVERLAY_VERSION="${S6_OVERLAY_VERSION}"\
-        --build-arg S6_OVERLAY_URL="${S6_OVERLAY_URL}"\
-        --pull -t ${TEMP_CONTAINER} $DOCKERDIR
-
-    echo "${TEMP_REGISTRY}" > $CONTAINER_REGISTRY
-    echo "${TEMP_NAMESPACE}" > $CONTAINER_NAMESPACE
-    echo "${TEMP_IMAGE}" > $CONTAINER_IMAGE
-    echo "${TEMP_TAG}" > $CONTAINER_TAG
-    echo "${TEMP_CONTAINER}" > $CONTAINER_CONTAINER
-}
-
 build () { 
-    set -x
-    source versions/${IMAGE_VERSION}
+    input=$DEFAULT_BUILD
 
-    make ${REGISTRY} ${NAMESPACE} ${IMAGE} ${TAG}
-}
+    while getopts "h?:i:" opt; do
+        case $opt in
+            h|\?)
+                echo "Usage: $0 build -i INPUT"
+                exit 0
+            ;;
+            i) input=$OPTARG
+            ;;
+        esac
+    done
 
-version () {
-    set -x
-    source versions/$1.variable
-
+    source $input
+    
     SOURCE_FROM=$(grep '\<FROM\>' $DOCKERFILE)
     TARGET_FROM="FROM ${FROM}"
     sed -i "s/${SOURCE_FROM}/${TARGET_FROM}/g" $DOCKERFILE
-
-    make ${REGISTRY} ${NAMESPACE} ${IMAGE} ${TAG}
+    
+    DEV_CONTAINER=$DEV_REGISTRY/$DEV_NAMESPACE/$DEV_IMAGE:$DEV_TAG
+    docker build \
+        --build-arg VERSION="${BUILD_VERSION}"\
+        --build-arg S6_OVERLAY_VERSION="${S6_OVERLAY_VERSION}"\
+        --build-arg S6_OVERLAY_URL="${S6_OVERLAY_URL}"\
+        --pull -t ${DEV_CONTAINER} $DOCKERDIR
 
     sed -i "s/${TARGET_FROM}/${SOURCE_FROM}/g" $DOCKERFILE
 }
 
-image () {
-    set -x
-    source versions/${IMAGE_VERSION}
-
-    TEMP_TAG=$(date +%Y%m%d%H%M%S)-dev
-    
-    make ${REGISTRY} ${NAMESPACE} ${IMAGE} ${TEMP_TAG}
-}
-
-all () {
-    set -x
-
-    for entry in "versions"/*
+all () {   
+    for entry in *.build
     do
-        source $entry
-
-        SOURCE_FROM=$(grep '\<FROM\>' $DOCKERFILE)
-        TARGET_FROM="FROM ${FROM}"
-        sed -i "s/${SOURCE_FROM}/${TARGET_FROM}/g" $DOCKERFILE
-
-        make ${REGISTRY} ${NAMESPACE} ${IMAGE} ${TAG}
-
-        sed -i "s/${TARGET_FROM}/${SOURCE_FROM}/g" $DOCKERFILE
+        echo "Building: $entry"
+        (build -i $entry)
     done
 }
 
@@ -98,66 +102,74 @@ all () {
 #
 # Functions that handle the images produced by the build process
 
-deploy () {
-    if [ -f "$CONTAINER_CONTAINER" ]
-    then      
-        TEMP_CONTAINER=$(cat $CONTAINER_CONTAINER)
-        echo "Deploying image to a repository [$TEMP_CONTAINER]"  
+pull () {
+    input=$DEFAULT_BUILD
 
-        set -x
-        docker push $TEMP_CONTAINER
-    else
-        echo "$CONTAINER_CONTAINER not found."
-    fi
+    while getopts "h?:i:" opt; do
+        case $opt in
+            h|\?)
+                echo "Usage: $0 pull -i INPUT"
+                exit 0
+            ;;
+            i) input=$OPTARG
+            ;;
+        esac
+    done
+
+    set -x
+    source $input
+
+    DEV_CONTAINER=$DEV_REGISTRY/$DEV_NAMESPACE/$DEV_IMAGE:$DEV_TAG
+    docker pull $DEV_CONTAINER
+}
+
+push () {
+    input=$DEFAULT_BUILD
+
+    while getopts "h?:i:" opt; do
+        case $opt in
+            h|\?)
+                echo "Usage: $0 push -i INPUT"
+                exit 0
+            ;;
+            i) input=$OPTARG
+            ;;
+        esac
+    done
+
+    set -x
+    source $input
+
+    DEV_CONTAINER=$DEV_REGISTRY/$DEV_NAMESPACE/$DEV_IMAGE:$DEV_TAG
+    docker push $DEV_CONTAINER
 }
 
 release () {
-    source versions/${IMAGE_VERSION}
+    input=$DEFAULT_BUILD
 
-    if [ -f "$CONTAINER_CONTAINER" ]
-    then
-        set -x
-        TEMP_CONTAINER=$(cat $CONTAINER_CONTAINER)
-        RELEASE_IMAGE=${REGISTRY}/${NAMESPACE}/${IMAGE}:${TAG}
+    while getopts "h?:i:r:" opt; do
+        case $opt in
+            h|\?)
+                echo "Usage: $0 release -i INPUT"
+                exit 0
+            ;;
+            i) input=$OPTARG
+            ;;
+        esac
+    done
 
-        docker tag ${TEMP_CONTAINER} ${RELEASE_IMAGE}
-        docker rmi ${TEMP_CONTAINER}
-        docker push ${RELEASE_IMAGE}
-    else
-        echo "$CONTAINER_CONTAINER not found."
-    fi
-}
+    set -x
+    source $input
 
-pull () {
-    if [ -f "$CONTAINER_CONTAINER" ]
-    then
-        set -x
-        TEMP_CONTAINER=$(cat $CONTAINER_CONTAINER)
-        
-        echo "Pull image from repository [$TEMP_CONTAINER]"
-
-        docker pull $TEMP_CONTAINER
-    else
-        echo "$CONTAINER_IMAGE not found."
-    fi
+    DEV_CONTAINER=$DEV_REGISTRY/$DEV_NAMESPACE/$DEV_IMAGE:$DEV_TAG
+    RELEASE=$REGISTRY/$NAMESPACE/$IMAGE:$TAG
+    docker tag $DEV_CONTAINER $RELEASE
+    docker push $RELEASE
 }
 
 # Tidy Functions
 #
 # Functions that tidy up after the build process.
-
-clean () {
-    set -x
-    source versions/${IMAGE_VERSION}
-
-    if [ -f "$CONTAINER_IMAGE" ]
-    then
-        TEMP_IMAGE=$(cat $CONTAINER_IMAGE)
-        docker rmi ${TEMP_IMAGE}
-    else
-        echo "$CONTAINER_IMAGE not found."
-    fi
-}
 
 prune () {
     set -x
@@ -177,16 +189,24 @@ purge () {
 # Functions that handle testing of the image.
 
 test () {
-    set -x
-    source versions/${IMAGE_VERSION}
+    input=$DEFAULT_BUILD
 
-    if [ -f "$CONTAINER_IMAGE" ]
-    then
-        TEMP_IMAGE=$(cat $CONTAINER_IMAGE)
-        echo "Nothing to test on ${TEMP_IMAGE}"
-    else
-        echo "$CONTAINER_IMAGE not found."
-    fi
+    while getopts "h?:i:" opt; do
+        case $opt in
+            h|\?)
+                help
+                exit 0
+            ;;
+            i) input=$OPTARG
+            ;;
+        esac
+    done
+
+    set -x
+    source $input
+
+    cd ../test/
+    echo "Nothing to test"
 }
 
 # Help
@@ -201,19 +221,15 @@ help() {
     echo "   all        Builds all image for a Dockerfile"    
     echo "   build      Build an image from a Dockerfile" 
     echo "   clean      Removes the current working image" 
-    echo "   deploy     Push an image or a repository to a registry" 
-    echo "   image      Builds a temporary image from a Dockerfile" 
+    echo "   configure  Configures the build process" 
     echo "   make       Build an image from a Dockerfile" 
     echo "   prune      Remove one or more unused images" 
     echo "   pull       Pull an image or a repository from a registry" 
     echo "   push       Push an image or a repository to a registry" 
     echo "   purge      Remove one of more images" 
-    echo "   release    Push a release image to a registry" 
+    echo "   release    Build a release image from a Dockerfile" 
     echo "   test       Runs tests against a image." 
-    echo "   version    Builds a temporary image for a specific Dockerfile version" 
     echo
-    echo "Usage: $0 make REGISTRY | NAMESPACE | IMAGE | TAG"
-    echo "Usage: $0 version VERSION"
     echo
 
     exit 1

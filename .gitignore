@@ -2,5 +2,4 @@
 .vagrant
 *.swp
 *.db
-*.var
-.vscode/
+*.build

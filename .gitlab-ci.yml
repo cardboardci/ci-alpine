@@ -3,26 +3,37 @@ image: docker:latest
 services:
   - docker:dind
 
-before_script:
-  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com 
-
 variables:
   CONTAINER_REGISTRY: registry.gitlab.com
 
+before_script:
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CONTAINER_REGISTRY
+
 stages:
+  - configure
   - build
   - test
   - release
 
+configure:
+  stage: configure
+  script:
+    - cd build/ && sh docker-make configure -r $CONTAINER_REGISTRY -n $CI_PROJECT_NAMESPACE -i $CI_PROJECT_NAME -t $CI_BUILD_ID -v latest -o latest.build
+  artifacts:
+    paths:
+      - build/*.build
+    expire_in: 2 hours
+
 build:
   stage: build
   script:
-    - cd build/ && sh docker-make make $CONTAINER_REGISTRY $CI_PROJECT_NAMESPACE $CI_PROJECT_NAME $CI_BUILD_ID && sh docker-make deploy
-  only:
-    - master
+    - cd build/ && sh docker-make all && sh docker-make push
+  dependencies:
+    - configure
   artifacts:
     paths:
-      - build/.build/
+      - build/*.build
+    expire_in: 2 hours
 
 test:
   stage: test
@@ -30,18 +41,15 @@ test:
     - cd build/ && sh docker-make pull && sh docker-make test
   dependencies:
     - build
-  only:
-    - master
   artifacts:
     paths:
-      - build/.build/
-
+      - build/*.build
+    expire_in: 2 hours
+    
 release:
   stage: release
   script:
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
     - cd build/ && sh docker-make pull && sh docker-make release
   dependencies:
-    - build
-  only:
-    - master
+    - test
