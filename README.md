@@ -2,14 +2,14 @@
 
 ## Summary
 
-A super small image with [X Window System](https://www.x.org/wiki/) development libraries installed. The project icon is from [cre.ativo mustard, HK from the Noun Project](docs/icon/README.md).
+A super small image with basic development libraries installed. The project icon is from [cre.ativo mustard, HK from the Noun Project](docs/icon/README.md).
 
 ## Usage
 
 You can use this image locally with `docker run`, calling `sh` to build X Window System applications:
 
 ```bash
-docker run -v /media/:/media/ jrbeverly/alpine:privileged sh
+docker run -it -v /media/:/media/ jrbeverly/alpine:edge sh
 ```
 
 ### Gitlab
@@ -18,7 +18,7 @@ You can setup a build job using `.gitlab-ci.yml`:
 
 ```yaml
 compile:
-  image: jrbeverly/alpine:baseimage
+  image: jrbeverly/alpine:edge
   script:
     - echo "Hello world"
 ```
@@ -66,7 +66,7 @@ You can view the [`build/README.md`](build/README.md) for more on using the `Mak
 The docker image follows the [Label Schema Convention](http://label-schema.org). Label Schema is a community project to provide a shared namespace for use by multiple tools, specifically `org.label-schema`. The values in the namespace can be accessed by the following command:
 
 ```bash
-docker inspect -f '{{ index .Config.Labels "org.label-schema.<LABEL>" }}' jrbeverly/xwindow
+docker inspect -f '{{ index .Config.Labels "org.label-schema.<LABEL>" }}' jrbeverly/alpine
 ```
 
 ### Label Extension
@@ -74,21 +74,8 @@ docker inspect -f '{{ index .Config.Labels "org.label-schema.<LABEL>" }}' jrbeve
 The label namespace `org.doc-schema` is an extension of `org.label-schema`. The namespace stores internal variables often used when interacting with the image. These variables will often be application versions or exposed internal variables. The values in the namespace can be accessed by the following command:
 
 ```bash
-docker inspect -f '{{ index .Config.Labels "org.doc-schema.<LABEL>" }}' jrbeverly/xwindow
+docker inspect -f '{{ index .Config.Labels "org.doc-schema.<LABEL>" }}' jrbeverly/alpine
 ```
-
-## User and Group Mapping
-
-All processes within the `baseimage` docker container will be run as the **docker user**, a non-root user. The **docker user** is created on build with the user id `DUID` and a member of a group with group id `DGID`.
-
-Any permissions on the host operating system (OS) associated with either the user (`DUID`) or group (`DGID`) will be associated with the docker user. The values of `DUID` and `DGID` are visible in the [Build Arguments](#build-arguments), and can be accessed by the commands:
-
-```bash
-docker inspect -f '{{ index .Config.Labels "org.doc-schema.user" }}' jrbeverly/xwindow:baseimage
-docker inspect -f '{{ index .Config.Labels "org.doc-schema.group" }}' jrbeverly/xwindow:baseimage
-```
-
-The notation of the build variables is short form for docker user id (`DUID`) and docker group id (`DGID`).
 
 ## Acknowledgements
 
