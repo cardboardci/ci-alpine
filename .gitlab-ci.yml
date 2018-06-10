@@ -70,7 +70,7 @@ test-edge:
 # ----------------------------------------
 
 deploy:
-  stage: deploy
+  stage: Deploy
   script:
     - sh build/ci/pull.sh
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
