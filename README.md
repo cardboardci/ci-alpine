@@ -2,7 +2,7 @@
 
 ## Summary
 
-A super small image with basic development libraries installed. The project icon is from [cre.ativo mustard, HK from the Noun Project](docs/icon/README.md).
+A super small image with basic development libraries installed. The project icon is from [cre.ativo mustard, HK from the Noun Project](docs/icon/icon.json).
 
 ## Usage
 
