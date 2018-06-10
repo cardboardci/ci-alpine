@@ -8,13 +8,13 @@ services:
 # ---------------------------------------
 
 stages:
-  - build
-  - test
-  - deploy
+  - Build
+  - Test
+  - Deploy
 
 variables:
   STAGING_REGISTRY: registry.gitlab.com
-  STAGING_NAMESPACE: jrbeverly-docker
+  STAGING_NAMESPACE: jrbeverly
   STAGING_PROJECT: docker-alpine
 
   REGISTRY: docker.io
@@ -36,56 +36,34 @@ before_script:
 # Build
 # ----------------------------------------
 
-build-baseimage:
-  stage: build
+build-edge:
+  stage: Build
   variables:
-    VERSION: baseimage
+    VERSION: edge
   script:
     - make -C build/ build
     - make -C build/ push
   only:
     - web
-    - master
-
-build-privileged:
-  stage: build
-  variables:
-    VERSION: privileged
-  script:
-    - make -C build/ build
-    - make -C build/ push
-  only:
-    - web
+    - contrib
     - master
 
 # ----------------------------------------
 # Tests
 # ----------------------------------------
 
-test-baseimage:
-  stage: test
+test-edge:
+  stage: Test
   variables:
-    VERSION: baseimage
+    VERSION: edge
   script:
     - make -s -C build/ pull
     - make -s -C build/ test
   dependencies:
-    - build-baseimage
+    - build-edge
   only:
     - web
-    - master
-
-test-privileged:
-  stage: test
-  variables:
-    VERSION: privileged
-  script:
-    - make -s -C build/ pull
-    - make -s -C build/ test
-  dependencies:
-    - build-privileged
-  only:
-    - web
+    - contrib
     - master
 
 # ----------------------------------------
@@ -93,14 +71,14 @@ test-privileged:
 # ----------------------------------------
 
 deploy:
-  stage: deploy
+  stage: Deploy
   script:
     - sh build/ci/pull.sh
     - docker login -u $DOCKER_BUILD_USER -p $DOCKER_BUILD_TOKEN
     - sh build/ci/deploy.sh
   dependencies:
-    - test-baseimage
-    - test-privileged
+    - test-edge
   only:
     - web
+    - contrib
     - master

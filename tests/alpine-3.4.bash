@@ -4,8 +4,7 @@
 # Variables
 #
 SCRIPT=$(readlink -f "$0")
-DIR="$(dirname $SCRIPT)"
-DIR_TESTS="$(dirname $(dirname $DIR))"
+DIR_TESTS="$(dirname $SCRIPT)"
 
 DIR_LIBRARY="${DIR_TESTS}/lib"
 DIR_RESOURCES="${DIR_TESTS}/resources"
