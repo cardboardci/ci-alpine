@@ -1,0 +1,11 @@
+include $(PATH_INFO)/Makefile.user.variable
+
+# Image
+TAG := 3.5
+
+# Build Args
+BUILD_PARAMS := --build-arg DUID="$(DUID)" --build-arg DGID="$(DGID)" --build-arg S6_OVERLAY_URL="$(S6_OVERLAY_URL)"
+
+# Filepath
+PATH_DOCKER := $(PATH_ROOT)/src
+PATH_DOCKERFILE := $(PATH_ROOT)/src/Dockerfile.3.5
