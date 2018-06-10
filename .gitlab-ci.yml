@@ -45,7 +45,6 @@ build-edge:
     - make -C build/ push
   only:
     - web
-    - contrib
     - master
 
 # ----------------------------------------
@@ -63,7 +62,6 @@ test-edge:
     - build-edge
   only:
     - web
-    - contrib
     - master
 
 # ----------------------------------------
@@ -80,5 +78,4 @@ deploy:
     - test-edge
   only:
     - web
-    - contrib
     - master
