@@ -45,6 +45,7 @@ build-edge:
     - make -C build/ push
   only:
     - web
+    - contrib
     - master
 
 # ----------------------------------------
