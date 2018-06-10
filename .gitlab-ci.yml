@@ -14,7 +14,7 @@ stages:
 
 variables:
   STAGING_REGISTRY: registry.gitlab.com
-  STAGING_NAMESPACE: jrbeverly-docker
+  STAGING_NAMESPACE: jrbeverly
   STAGING_PROJECT: docker-alpine
 
   REGISTRY: docker.io
