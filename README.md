@@ -6,10 +6,10 @@ A super small image with [X Window System](https://www.x.org/wiki/) development 
 
 ## Usage
 
-You can use this image locally with `docker run`, calling `g++` to build X Window System applications:
+You can use this image locally with `docker run`, calling `sh` to build X Window System applications:
 
 ```bash
-docker run -v /media/:/media/ jrbeverly/xwindow:privileged g++ myxapp.cpp -o xapp
+docker run -v /media/:/media/ jrbeverly/alpine:privileged sh
 ```
 
 ### Gitlab
@@ -18,12 +18,9 @@ You can setup a build job using `.gitlab-ci.yml`:
 
 ```yaml
 compile:
-  image: jrbeverly/xwindow:baseimage
+  image: jrbeverly/alpine:baseimage
   script:
-    - g++ myxapp.cpp -o xapp
-  artifacts:
-    paths:
-      - xapp
+    - echo "Hello world"
 ```
 
 ## Components
