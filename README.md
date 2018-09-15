@@ -8,7 +8,7 @@ A super small image with basic development libraries installed. The project icon
 
 ## Usage
 
-You can use this image locally with `docker run`, calling `sh` to build X Window System applications:
+You can use this image locally with `docker run`, calling `sh` to enter the container:
 
 ```bash
 docker run -it -v /media/:/media/ jrbeverly/alpine:edge sh
